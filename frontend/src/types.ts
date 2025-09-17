@@ -7,5 +7,5 @@ export type SelectedColor = {
 export type ColorWheelEntry = {
   id: number;
   hex: string;
-  removeable: boolean;
+  removable: boolean;
 };
