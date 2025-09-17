@@ -3,9 +3,9 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
-from .models import ColorWheelEntries, SelectedColors
-from .utils import create_default_colors
-from .db import init_db, get_session
+from models import ColorWheelEntries, SelectedColors
+from utils import create_default_colors
+from db import init_db, get_session
 
 
 @asynccontextmanager

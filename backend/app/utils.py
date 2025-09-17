@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from .models import ColorWheelEntries
-from .db import engine
+from models import ColorWheelEntries
+from db import engine
 
 DEFAULT_COLORS = [
     "#000000",  # black

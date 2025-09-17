@@ -12,7 +12,7 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 def init_db():
     """Create all tables."""
-    from . import models
+    import models
 
     SQLModel.metadata.create_all(engine)
 
