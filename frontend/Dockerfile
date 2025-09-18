@@ -8,8 +8,10 @@ RUN npm install
 
 COPY . .
 
-# Pass the API URL during build (can be overridden in docker-compose)
+# Declare build argument
 ARG VITE_API_URL
+# Make it available to Vite via environment
+ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
 
