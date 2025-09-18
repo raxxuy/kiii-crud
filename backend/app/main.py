@@ -9,7 +9,7 @@ from models import ColorWheelEntries, SelectedColors
 from utils import create_default_colors
 from db import init_db, get_session
 
-load_dotenv()
+_ = load_dotenv()
 
 
 @asynccontextmanager
@@ -25,7 +25,7 @@ app = FastAPI(lifespan=lifespan)
 origins = [
     "http://localhost:5173",  # Vite dev server
     "http://127.0.0.1:5173",
-    os.getenv("FRONTEND_URL")
+    os.getenv("FRONTEND_URL", ""),
 ]
 
 app.add_middleware(
