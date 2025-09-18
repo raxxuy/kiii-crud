@@ -13,12 +13,12 @@ export default function App() {
 
   // Fetch initial data
   useEffect(() => {
-    fetch(`${API_URL}/selected-colors/`)
+    fetch(`${API_URL}/api/selected-colors/`)
       .then((res) => res.json())
       .then((data) => setSelectedColors(data))
       .catch((err) => console.error("Error fetching colors:", err));
 
-    fetch(`${API_URL}/color-wheel/`)
+    fetch(`${API_URL}/api/color-wheel/`)
       .then((res) => res.json())
       .then((data) => setColorWheelEntries(data))
       .catch((err) => console.error("Error fetching color wheel:", err));
@@ -33,7 +33,7 @@ export default function App() {
   // Add to selected colors
   const addToSelected = async (color: ColorWheelEntry) => {
     try {
-      const res = await fetch(`${API_URL}/selected-colors/`, {
+      const res = await fetch(`${API_URL}/api/selected-colors/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ hex: color.hex }),
@@ -50,7 +50,7 @@ export default function App() {
   // Add back to color wheel
   const addToColorWheel = async (color: SelectedColor) => {
     try {
-      const res = await fetch(`${API_URL}/color-wheel/`, {
+      const res = await fetch(`${API_URL}/api/color-wheel/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ hex: color.hex }),
@@ -68,7 +68,7 @@ export default function App() {
   const addCombinedToWheel = async () => {
     if (!combinedColor) return;
     try {
-      const res = await fetch(`${API_URL}/color-wheel/`, {
+      const res = await fetch(`${API_URL}/api/color-wheel/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ hex: combinedColor }),
@@ -85,7 +85,7 @@ export default function App() {
   // Remove selected color
   const removeSelected = async (id: number) => {
     try {
-      const res = await fetch(`${API_URL}/selected-colors/${id}`, {
+      const res = await fetch(`${API_URL}/api/selected-colors/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -99,7 +99,7 @@ export default function App() {
   // Remove color wheel entry
   const removeColorWheel = async (id: number) => {
     try {
-      const res = await fetch(`${API_URL}/color-wheel/${id}`, {
+      const res = await fetch(`${API_URL}/api/color-wheel/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
