@@ -37,13 +37,13 @@ app.add_middleware(
 )
 
 
-@app.get("/color-wheel/", response_model=list[ColorWheelEntries])
+@app.get("/api/color-wheel/", response_model=list[ColorWheelEntries])
 def get_color_wheel(session: Session = Depends(get_session)):
     color_wheel_entries = session.exec(select(ColorWheelEntries)).all()
     return color_wheel_entries
 
 
-@app.post("/color-wheel/", response_model=ColorWheelEntries)
+@app.post("/api/color-wheel/", response_model=ColorWheelEntries)
 def add_color_wheel_entry(
     entry: ColorWheelEntries, session: Session = Depends(get_session)
 ):
@@ -60,7 +60,7 @@ def add_color_wheel_entry(
     return entry
 
 
-@app.delete("/color-wheel/{entry_id}")
+@app.delete("/api/color-wheel/{entry_id}")
 def remove_color_wheel_entry(entry_id: int, session: Session = Depends(get_session)):
     entry = session.get(ColorWheelEntries, entry_id)
     if not entry:
@@ -72,13 +72,13 @@ def remove_color_wheel_entry(entry_id: int, session: Session = Depends(get_sessi
     return {"ok": True}
 
 
-@app.get("/selected-colors/", response_model=list[SelectedColors])
+@app.get("/api/selected-colors/", response_model=list[SelectedColors])
 def get_selected_colors(session: Session = Depends(get_session)):
     colors = session.exec(select(SelectedColors)).all()
     return colors
 
 
-@app.post("/selected-colors/", response_model=SelectedColors)
+@app.post("/api/selected-colors/", response_model=SelectedColors)
 def add_selected_color(color: SelectedColors, session: Session = Depends(get_session)):
     # Prevent duplicates
     exists = session.exec(
@@ -93,7 +93,7 @@ def add_selected_color(color: SelectedColors, session: Session = Depends(get_ses
     return color
 
 
-@app.delete("/selected-colors/{color_id}")
+@app.delete("/api/selected-colors/{color_id}")
 def remove_selected_color(color_id: int, session: Session = Depends(get_session)):
     color = session.get(SelectedColors, color_id)
     if not color:
