@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function App() {
   const [selectedColors, setSelectedColors] = useState<SelectedColor[]>([]);
   const [colorWheelEntries, setColorWheelEntries] = useState<ColorWheelEntry[]>(
-    [],
+    []
   );
 
   // Fetch initial data
@@ -27,7 +27,7 @@ export default function App() {
   // Re-calculate the combined color only when selectedColors changes
   const combinedColor = useMemo(
     () => combineColors(selectedColors),
-    [selectedColors],
+    [selectedColors]
   );
 
   // Add to selected colors
@@ -110,6 +110,20 @@ export default function App() {
     }
   };
 
+  // Bulk delete all selected colors
+  const removeAllSelected = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/selected-colors/`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setSelectedColors([]); // clear local state
+      }
+    } catch (err) {
+      console.error("Error removing all selected colors:", err);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-8">
       {/* Combined color display */}
@@ -124,6 +138,14 @@ export default function App() {
         onClick={addCombinedToWheel}
       >
         Add Combined Color to Wheel
+      </button>
+
+      {/* Remove all button */}
+      <button
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 mb-4"
+        onClick={removeAllSelected}
+      >
+        Remove All Selected Colors
       </button>
 
       {/* Selected colors */}

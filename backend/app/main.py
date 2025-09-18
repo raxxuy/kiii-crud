@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from sqlmodel import Session, select
+from sqlmodel import Session, select, delete
 from dotenv import load_dotenv
 import os
 
@@ -101,3 +101,10 @@ def remove_selected_color(color_id: int, session: Session = Depends(get_session)
     session.delete(color)
     session.commit()
     return {"ok": True}
+
+
+@app.delete("/api/selected-colors/")
+def remove_all_selected_colors(session: Session = Depends(get_session)):
+    session.exec(delete(SelectedColors))
+    session.commit()
+    return {"ok": True, "deleted_all": True}
