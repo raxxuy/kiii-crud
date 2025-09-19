@@ -125,78 +125,141 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-8">
-      {/* Combined color display */}
-      <div
-        className="w-112 h-112 rounded-full border border-gray-400"
-        style={{ backgroundColor: combinedColor }}
-      ></div>
+    <div className="min-h-screen w-full bg-gray-50">
+      <div className="mx-auto max-w-5xl px-4 py-8 flex flex-col gap-8">
+        {/* Header */}
+        <div className="flex items-end justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              Color Mixer
+            </h1>
+            <p className="text-sm text-gray-500">
+              Blend selected colors and build a wheel.
+            </p>
+          </div>
+          <div className="text-sm text-gray-500">
+            <span className="font-medium text-gray-700">Selected:</span>{" "}
+            {selectedColors.length}
+            <span className="mx-2">•</span>
+            <span className="font-medium text-gray-700">Wheel:</span>{" "}
+            {colorWheelEntries.length}
+          </div>
+        </div>
 
-      {/* Button to add combined color */}
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        onClick={addCombinedToWheel}
-      >
-        Add Combined Color to Wheel
-      </button>
+        {/* Combined color card */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col items-center gap-4">
+            <div
+              className="w-64 h-64 rounded-full ring-1 ring-gray-200 shadow-inner"
+              style={{ backgroundColor: combinedColor }}
+              aria-label="Combined color preview"
+              title={combinedColor}
+            ></div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-500">Combined</span>
+              <span className="px-2 py-1 rounded-md bg-gray-100 font-mono text-sm text-gray-800 border border-gray-200">
+                {combinedColor}
+              </span>
+            </div>
+            <button
+              className={`px-4 py-2 rounded-md text-white transition-colors ${
+                selectedColors.length === 0
+                  ? "bg-blue-300 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+              onClick={addCombinedToWheel}
+              disabled={selectedColors.length === 0}
+            >
+              Add Combined Color to Wheel
+            </button>
+          </div>
 
-      {/* Remove all button */}
-      <button
-        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 mb-4"
-        onClick={removeAllSelected}
-      >
-        Remove All Selected Colors
-      </button>
-
-      {/* Selected colors */}
-      <h1>Selected Colors</h1>
-      <ul className="flex gap-2 flex-wrap justify-center">
-        {selectedColors.map((color) => (
-          <li
-            key={color.id}
-            className="relative w-8 h-8 border border-gray-300 cursor-pointer"
-            style={{ backgroundColor: color.hex }}
-            onClick={() => addToColorWheel(color)}
-          >
-            {color && (
+          {/* Selected colors card */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-medium text-gray-800">
+                Selected Colors
+              </h2>
               <button
-                className="absolute -top-2 -right-2 w-4 h-4 bg-white border rounded-full text-xs flex items-center justify-center"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeSelected(color.id);
-                }}
+                className={`px-3 py-1.5 rounded-md text-white text-sm transition-colors ${
+                  selectedColors.length === 0
+                    ? "bg-red-300 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
+                onClick={removeAllSelected}
+                disabled={selectedColors.length === 0}
               >
-                ×
+                Remove All
               </button>
+            </div>
+            {selectedColors.length === 0 ? (
+              <div className="text-sm text-gray-500">
+                No selected colors yet. Tap a color from the wheel.
+              </div>
+            ) : (
+              <ul className="grid grid-cols-10 gap-2">
+                {selectedColors.map((color) => (
+                  <li
+                    key={color.id}
+                    className="relative w-10 h-10 rounded-md border border-gray-200 cursor-pointer ring-1 ring-black/10 hover:ring-black/20 transition"
+                    style={{ backgroundColor: color.hex }}
+                    onClick={() => addToColorWheel(color)}
+                    title={color.hex}
+                  >
+                    <button
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white/95 border border-gray-300 rounded-full text-[10px] leading-none flex items-center justify-center shadow"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeSelected(color.id);
+                      }}
+                      aria-label="Remove selected color"
+                    >
+                      x
+                    </button>
+                  </li>
+                ))}
+              </ul>
             )}
-          </li>
-        ))}
-      </ul>
+          </div>
+        </div>
 
-      {/* Color wheel entries */}
-      <h1>Color Wheel</h1>
-      <ul className="flex gap-2 flex-wrap justify-center">
-        {colorWheelEntries.map((entry) => (
-          <li
-            key={entry.id}
-            className="relative w-8 h-8 border border-gray-300 cursor-pointer"
-            style={{ backgroundColor: entry.hex }}
-            onClick={() => addToSelected(entry)}
-          >
-            {entry.removable && (
-              <button
-                className="absolute -top-2 -right-2 w-4 h-4 bg-white border rounded-full text-xs flex items-center justify-center"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeColorWheel(entry.id);
-                }}
-              >
-                ×
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+        {/* Color Wheel card */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+          <h2 className="text-lg font-medium text-gray-800 mb-4">
+            Color Wheel
+          </h2>
+          {colorWheelEntries.length === 0 ? (
+            <div className="text-sm text-gray-500">
+              No colors in the wheel yet.
+            </div>
+          ) : (
+            <ul className="grid grid-cols-12 gap-2">
+              {colorWheelEntries.map((entry) => (
+                <li
+                  key={entry.id}
+                  className="relative w-10 h-10 rounded-md border border-gray-200 cursor-pointer ring-1 ring-black/10 hover:ring-black/20 transition"
+                  style={{ backgroundColor: entry.hex }}
+                  onClick={() => addToSelected(entry)}
+                  title={entry.hex}
+                >
+                  {entry.removable && (
+                    <button
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white/95 border border-gray-300 rounded-full text-[10px] leading-none flex items-center justify-center shadow"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeColorWheel(entry.id);
+                      }}
+                      aria-label="Remove color wheel entry"
+                    >
+                      x
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

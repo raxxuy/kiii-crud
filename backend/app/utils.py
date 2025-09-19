@@ -4,11 +4,11 @@ from db import engine
 
 DEFAULT_COLORS = [
     "#000000",  # black
-    "#FFFFFF",  # white
-    "#FF0000",  # red
-    "#0000FF",  # blue
-    "#FFFF00",  # yellow
-    "#FFA500",  # orange
+    "#ffffff",  # white
+    "#ff0000",  # red
+    "#0000ff",  # blue
+    "#ffff00",  # yellow
+    "#ffa500",  # orange
     "#008000",  # green
     "#800080",  # purple
 ]
